@@ -1,187 +1,154 @@
 
-// ==========================================
-// EJERCICIOS DE JAVASCRIPT - KAIJU NO. 8
-// ==========================================
+// EJERCICIO 1
+// Autocuracion con pociones
 
-
-// ==========================================
-// EJERCICIO 1: AUTOCURACION CON POCIONES
-// ==========================================
-
-// Variables del jugador
 let vida = 100;
 let vidaMaxima = 100;
-let limiteCuracion = 50;
+let limitePocion = 50;
 let pociones = 3;
-let curacion = 30;
 
-console.log("=== AUTOCURACION ===");
+console.log("AUTOCURACION KAIJU");
 console.log("Vida inicial:", vida);
-console.log("Pociones disponibles:", pociones);
+console.log("Pociones:", pociones);
 
-// La vida disminuye cada 2 segundos
 let intervalo = setInterval(function () {
 
-    vida -= 5;
-
-    if (vida < 0) {
-        vida = 0;
-    }
+    vida = vida - 5;
 
     console.log("Vida actual:", vida);
 
-    // Usar una pocion si la vida es menor a 50
-    if (vida > 0 && vida < limiteCuracion && pociones > 0) {
+    if (vida < limitePocion && vida > 0 && pociones > 0) {
 
-        vida += curacion;
+        vida = vida + 30;
+        pociones--;
 
-        // Evitar superar la vida maxima
         if (vida > vidaMaxima) {
             vida = vidaMaxima;
         }
 
-        pociones--;
-
-        console.log("¡Pocion utilizada!");
+        console.log("Se utilizo una pocion");
         console.log("Vida recuperada:", vida);
         console.log("Pociones restantes:", pociones);
     }
 
-    // Detener el programa cuando la vida llegue a 0
-    if (vida === 0) {
-        console.log("El jugador ha muerto.");
+    if (vida <= 0) {
+        vida = 0;
+        console.log("El Kaiju se quedo sin vida");
         clearInterval(intervalo);
     }
 
 }, 2000);
 
+// EJERCICIO 2
+// Organizar elementos de la bolsa
 
-// ==========================================
-// EJERCICIO 2: ORDENAMIENTO DE BOLSA
-// ==========================================
-
-// Arreglo de objetos con elementos de Kaiju No. 8
-
-const bolsa = [
+let bolsa = [
     {
         nombre: "Pistola",
         cantidad: 5,
         tipo: "Arma"
     },
     {
-        nombre: "Espada",
+        nombre: "Guanteletes",
         cantidad: 2,
         tipo: "Arma"
     },
     {
-        nombre: "Guanteletes",
+        nombre: "Espada",
         cantidad: 3,
         tipo: "Arma"
     },
     {
+        nombre: "Pocion",
+        cantidad: 8,
+        tipo: "Consumible"
+    },
+    {
         nombre: "Botiquin",
-        cantidad: 10,
-        tipo: "Consumible"
-    },
-    {
-        nombre: "Pocion de vida",
-        cantidad: 6,
-        tipo: "Consumible"
-    },
-    {
-        nombre: "Bebida energetica",
         cantidad: 4,
         tipo: "Consumible"
     },
     {
-        nombre: "Traje de combate",
+        nombre: "Energia",
+        cantidad: 6,
+        tipo: "Consumible"
+    },
+    {
+        nombre: "Traje",
         cantidad: 2,
         tipo: "Equipo"
     },
     {
-        nombre: "Escudo",
+        nombre: "Casco",
         cantidad: 5,
         tipo: "Equipo"
     },
     {
-        nombre: "Casco",
+        nombre: "Escudo",
         cantidad: 3,
         tipo: "Equipo"
     }
 ];
 
 // Funcion para organizar la bolsa
-function organizarBolsa(elementos) {
 
-    let armas = [];
-    let consumibles = [];
-    let equipo = [];
+function organizarBolsa() {
 
-    // Separar los elementos por tipo
-    for (let i = 0; i < elementos.length; i++) {
+    let armas = bolsa.filter(objeto => objeto.tipo === "Arma");
 
-        if (elementos[i].tipo === "Arma") {
-            armas.push(elementos[i]);
+    let consumibles = bolsa.filter(objeto => objeto.tipo === "Consumible");
 
-        } else if (elementos[i].tipo === "Consumible") {
-            consumibles.push(elementos[i]);
+    let equipo = bolsa.filter(objeto => objeto.tipo === "Equipo");
 
-        } else if (elementos[i].tipo === "Equipo") {
-            equipo.push(elementos[i]);
-        }
-    }
+    // Ordenar por cantidad de mayor a menor
 
-    // Ordenar de mayor a menor cantidad
     armas.sort((a, b) => b.cantidad - a.cantidad);
+
     consumibles.sort((a, b) => b.cantidad - a.cantidad);
+
     equipo.sort((a, b) => b.cantidad - a.cantidad);
 
-    // Mostrar resultados
-    console.log("=== BOLSA ORGANIZADA ===");
+    console.log("BOLSA DE KAIJUS");
 
-    console.log("ARMAS:");
+    console.log("Armas:");
     console.table(armas);
 
-    console.log("CONSUMIBLES:");
+    console.log("Consumibles:");
     console.table(consumibles);
 
-    console.log("EQUIPO:");
+    console.log("Equipo:");
     console.table(equipo);
 }
 
-organizarBolsa(bolsa);
+organizarBolsa();
 
+// EJERCICIO 3
+// Batalla de Kaijus
 
-// ==========================================
-// EJERCICIO 3: BATALLA KAIJU
-// ==========================================
-
-// Caracteristicas de los Kaijus
-
-const kaiju8 = {
-    nombre: "Kaiju No. 8",
+let kaiju8 = {
+    nombre: "Kaiju No.8",
     tipo: "Transformacion",
-    ataque: "Golpe devastador",
+    ataque: "Golpe",
     daño: 30,
     vida: 100,
     defensa: 10
 };
 
-const kaiju9 = {
-    nombre: "Kaiju No. 9",
-    tipo: "Regeneracion",
-    ataque: "Proyectil organico",
+let kaiju9 = {
+    nombre: "Kaiju No.9",
+    tipo: "Misterioso",
+    ataque: "Proyectil",
     daño: 25,
     vida: 100,
     defensa: 8
 };
 
 // Funcion para calcular el daño
+
 function calcularDaño(atacante, defensor) {
 
     let dañoFinal = atacante.daño - defensor.defensa;
 
-    // Evitar daño negativo
     if (dañoFinal < 0) {
         dañoFinal = 0;
     }
@@ -190,62 +157,46 @@ function calcularDaño(atacante, defensor) {
 }
 
 // Funcion para atacar
+
 function atacar(atacante, defensor) {
 
-    let dañoRecibido = calcularDaño(atacante, defensor);
+    let daño = calcularDaño(atacante, defensor);
 
-    defensor.vida -= dañoRecibido;
+    defensor.vida = defensor.vida - daño;
 
-    // Evitar vida negativa
     if (defensor.vida < 0) {
         defensor.vida = 0;
     }
 
-    console.log(
-        atacante.nombre + " utiliza " + atacante.ataque
-    );
-
-    console.log(
-        defensor.nombre + " recibe " + dañoRecibido + " de daño."
-    );
-
-    console.log(
-        "Vida restante de " + defensor.nombre + ": " + defensor.vida
-    );
+    console.log(atacante.nombre + " utilizo " + atacante.ataque);
+    console.log("Daño realizado:", daño);
+    console.log("Vida de " + defensor.nombre + ":", defensor.vida);
 }
 
-// Funcion para iniciar la batalla
-function iniciarBatalla(kaiju1, kaiju2) {
+// Iniciar batalla
 
-    console.log("=== BATALLA KAIJU ===");
+console.log("BATALLA DE KAIJUS");
+console.log(kaiju8.nombre + " VS " + kaiju9.nombre);
 
-    console.log(kaiju1.nombre + " VS " + kaiju2.nombre);
+let turno = 1;
 
-    let turno = 1;
+while (kaiju8.vida > 0 && kaiju9.vida > 0) {
 
-    // La batalla continua mientras ambos tengan vida
-    while (kaiju1.vida > 0 && kaiju2.vida > 0) {
+    console.log("Turno:", turno);
 
-        console.log("=== TURNO " + turno + " ===");
+    atacar(kaiju8, kaiju9);
 
-        atacar(kaiju1, kaiju2);
-
-        // El segundo Kaiju solo ataca si sigue vivo
-        if (kaiju2.vida > 0) {
-            atacar(kaiju2, kaiju1);
-        }
-
-        turno++;
+    if (kaiju9.vida > 0) {
+        atacar(kaiju9, kaiju8);
     }
 
-    // Determinar ganador
-    if (kaiju1.vida > 0) {
-        console.log("¡GANADOR: " + kaiju1.nombre + "!");
-
-    } else {
-        console.log("¡GANADOR: " + kaiju2.nombre + "!");
-    }
+    turno++;
 }
 
-// Ejecutar batalla
-iniciarBatalla(kaiju8, kaiju9);
+// Mostrar ganador
+
+if (kaiju8.vida > 0) {
+    console.log("Ganador:", kaiju8.nombre);
+} else {
+    console.log("Ganador:", kaiju9.nombre);
+}
